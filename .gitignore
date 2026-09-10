@@ -1,0 +1,27 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Python & Virtual Environments
+venv/
+env/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+db.sqlite3
+staticfiles/
+
+# Node & Frontend Build
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.production
+
+# IDE & Editor
+.idea/
+.vscode/
+*.swp
+*.swo
