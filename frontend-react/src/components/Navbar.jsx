@@ -1,5 +1,4 @@
-import React from 'react';
-import { Truck, ShieldCheck, BookOpen, Printer } from 'lucide-react';
+import { Truck, BookOpen, Printer } from 'lucide-react';
 
 export default function Navbar({ onOpenRules, onPrintAll, hasLogs }) {
   return (

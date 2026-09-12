@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import TripForm from './components/TripForm';
 import TripStats from './components/TripStats';
@@ -7,7 +7,7 @@ import StopsList from './components/StopsList';
 import MultiDayLogViewer from './components/MultiDayLogViewer';
 import HosRulesModal from './components/HosRulesModal';
 import { simulateTripClient } from './utils/clientHosSimulator';
-import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
+import { AlertCircle, Info } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -67,6 +67,20 @@ export default function App() {
       truck_number: 'Rig 882',
       trailer_number: 'Reefer 9912',
       shipping_doc: 'BOL-449102',
+    },
+    {
+      id: 'regional-seattle-slc',
+      title: 'Seattle, WA to Salt Lake City, UT (Mountain West)',
+      current_location: 'Tacoma, WA',
+      pickup_location: 'Seattle, WA',
+      dropoff_location: 'Salt Lake City, UT',
+      current_cycle_used: 10.0,
+      driver_name: 'David Miller',
+      carrier_name: 'Cascade Intermodal',
+      carrier_address: 'Seattle, WA',
+      truck_number: 'Unit 310',
+      trailer_number: 'DryVan 7041',
+      shipping_doc: 'BOL-661298',
     }
   ]);
 
@@ -77,22 +91,7 @@ export default function App() {
   const [rulesModalOpen, setRulesModalOpen] = useState(false);
   const [focusedLocation, setFocusedLocation] = useState(null);
 
-  // Fetch sample trips on initial mount
-  useEffect(() => {
-    fetch(`${API_BASE}/api/sample-trips/`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data && data.sample_trips) {
-          setSampleTrips(data.sample_trips);
-        }
-      })
-      .catch(() => {});
-
-    // Automatically plan the initial trip
-    executePlanTrip(formData);
-  }, []);
-
-  const executePlanTrip = async (payload) => {
+  const executePlanTrip = useCallback(async (payload) => {
     setLoading(true);
     setError(null);
     setNotice(null);
@@ -117,13 +116,33 @@ export default function App() {
         const clientData = simulateTripClient(payload);
         setTripResult(clientData);
         setNotice('Connected via high-accuracy client simulation engine.');
-      } catch (fallbackErr) {
+      } catch {
         setError(err.message || 'Unable to plan trip. Please verify your connection.');
       }
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Fetch sample trips on initial mount
+  useEffect(() => {
+    fetch(`${API_BASE}/api/sample-trips/`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && data.sample_trips) {
+          setSampleTrips(data.sample_trips);
+        }
+      })
+      .catch(() => {});
+
+    // Automatically plan the initial trip asynchronously
+    const timer = setTimeout(() => {
+      executePlanTrip(formData);
+    }, 0);
+
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [executePlanTrip]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -222,6 +241,7 @@ export default function App() {
 
           <StopsList
             stops={tripResult ? tripResult.stops : []}
+            waypoints={tripResult ? tripResult.waypoints : []}
             routeInstructions={tripResult ? tripResult.route_instructions : []}
             onSelectStop={(stop) => setFocusedLocation(stop)}
           />

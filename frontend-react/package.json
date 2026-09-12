@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "node ./scripts/node-runner.cjs vite",
+    "build": "node ./scripts/node-runner.cjs vite build",
+    "lint": "node ./scripts/node-runner.cjs eslint .",
+    "preview": "node ./scripts/node-runner.cjs vite preview"
   },
   "engines": {
     "node": ">=20.0.0"

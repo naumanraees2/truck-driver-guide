@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MapPin, Navigation, Clock, Play, Sparkles, User, Building, Truck } from 'lucide-react';
 
 export default function TripForm({
@@ -164,7 +164,10 @@ export default function TripForm({
         {showAdvanced && (
           <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', marginBottom: '1.25rem' }}>
             <div className="form-group">
-              <label className="form-label" style={{ fontSize: '0.75rem' }}>Driver Name</label>
+              <label className="form-label" style={{ fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <User size={13} color="#94a3b8" />
+                Driver Name
+              </label>
               <input
                 type="text"
                 name="driver_name"
@@ -175,7 +178,10 @@ export default function TripForm({
               />
             </div>
             <div className="form-group">
-              <label className="form-label" style={{ fontSize: '0.75rem' }}>Carrier Name & Office</label>
+              <label className="form-label" style={{ fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <Building size={13} color="#94a3b8" />
+                Carrier Name & Office
+              </label>
               <input
                 type="text"
                 name="carrier_name"
@@ -187,7 +193,10 @@ export default function TripForm({
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
               <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label" style={{ fontSize: '0.75rem' }}>Truck / Tractor #</label>
+                <label className="form-label" style={{ fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <Truck size={13} color="#94a3b8" />
+                  Truck / Tractor #
+                </label>
                 <input
                   type="text"
                   name="truck_number"

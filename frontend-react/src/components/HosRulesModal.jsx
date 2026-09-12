@@ -1,5 +1,4 @@
-import React from 'react';
-import { X, ShieldAlert, CheckCircle2, Info } from 'lucide-react';
+import { X, ShieldAlert, CheckCircle2 } from 'lucide-react';
 
 export default function HosRulesModal({ isOpen, onClose }) {
   if (!isOpen) return null;

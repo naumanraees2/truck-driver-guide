@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Navigation,
   Compass,
@@ -9,9 +8,7 @@ import {
   Moon,
   PackageCheck,
   Flag,
-  Wrench,
-  CheckCircle2,
-  ChevronRight
+  Wrench
 } from 'lucide-react';
 
 export default function RouteInstructions({ instructions, onSelectInstruction }) {
@@ -141,9 +138,13 @@ export default function RouteInstructions({ instructions, onSelectInstruction })
                         padding: '0.1rem 0.4rem',
                         borderRadius: '4px',
                         background: 'rgba(255, 255, 255, 0.06)',
-                        color: 'var(--text-secondary)'
+                        color: 'var(--text-secondary)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '3px'
                       }}
                     >
+                      <Clock size={11} />
                       {step.duration}
                     </span>
                   )}
@@ -170,3 +171,4 @@ export default function RouteInstructions({ instructions, onSelectInstruction })
     </div>
   );
 }
+

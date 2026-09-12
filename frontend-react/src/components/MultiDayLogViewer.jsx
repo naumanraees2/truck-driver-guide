@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import EldLogSheet from './EldLogSheet';
 import { FileText, Printer, Layers } from 'lucide-react';
 
@@ -56,7 +56,7 @@ export default function MultiDayLogViewer({ dailyLogs }) {
           <button
             className="btn btn-secondary btn-sm btn-print"
             onClick={handlePrint}
-            title="Print or save as PDF"
+            title="Print or save all daily sheets as PDF"
           >
             <Printer size={15} color="#10b981" />
             <span>Print Sheets</span>
@@ -64,24 +64,35 @@ export default function MultiDayLogViewer({ dailyLogs }) {
         </div>
       </div>
 
-      {/* Render Single Sheet or All Sheets */}
+      {/* Render Single Sheet on Screen or All Sheets */}
       {activeTab === -1 ? (
         <div className="all-sheets-container">
-          {dailyLogs.map((log, idx) => (
+          {dailyLogs.map((log) => (
             <EldLogSheet
               key={log.day_number}
               logData={log}
-              dayIndex={idx}
               totalDays={totalDays}
             />
           ))}
         </div>
       ) : (
-        <EldLogSheet
-          logData={dailyLogs[activeTab]}
-          dayIndex={activeTab}
-          totalDays={totalDays}
-        />
+        <>
+          <div className="screen-only-sheet">
+            <EldLogSheet
+              logData={dailyLogs[activeTab]}
+              totalDays={totalDays}
+            />
+          </div>
+          <div className="print-only-sheets">
+            {dailyLogs.map((log) => (
+              <EldLogSheet
+                key={log.day_number}
+                logData={log}
+                totalDays={totalDays}
+              />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

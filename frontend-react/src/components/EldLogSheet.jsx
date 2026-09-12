@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Download } from 'lucide-react';
 
-export default function EldLogSheet({ logData, dayIndex, totalDays }) {
+export default function EldLogSheet({ logData, totalDays }) {
   const svgRef = useRef(null);
   if (!logData) return null;
 
@@ -14,15 +14,15 @@ export default function EldLogSheet({ logData, dayIndex, totalDays }) {
     trailer_number,
     shipping_doc,
     total_miles_driving_today,
-    hours_summary,
-    recap,
+    hours_summary = {},
+    recap = {},
     step_points,
     remarks
   } = logData;
 
   // SVG Grid layout dimensions
   const SVG_WIDTH = 960;
-  const SVG_HEIGHT = 280;
+  const SVG_HEIGHT = 330;
   const LEFT_LABEL_WIDTH = 110;
   const RIGHT_TOTAL_WIDTH = 80;
   const GRID_LEFT = LEFT_LABEL_WIDTH;
@@ -55,10 +55,10 @@ export default function EldLogSheet({ logData, dayIndex, totalDays }) {
 
   // Row labels
   const rows = [
-    { label: '1. Off Duty', code: 'OFF', total: hours_summary.off_duty },
-    { label: '2. Sleeper Berth', code: 'SB', total: hours_summary.sleeper_berth },
-    { label: '3. Driving', code: 'D', total: hours_summary.driving },
-    { label: '4. On Duty (Not Driving)', code: 'ON', total: hours_summary.on_duty_not_driving }
+    { label: '1. Off Duty', code: 'OFF', total: hours_summary?.off_duty ?? 0 },
+    { label: '2. Sleeper Berth', code: 'SB', total: hours_summary?.sleeper_berth ?? 0 },
+    { label: '3. Driving', code: 'D', total: hours_summary?.driving ?? 0 },
+    { label: '4. On Duty (Not Driving)', code: 'ON', total: hours_summary?.on_duty_not_driving ?? 0 }
   ];
 
   // Download SVG
@@ -436,16 +436,16 @@ export default function EldLogSheet({ logData, dayIndex, totalDays }) {
             <tbody>
               <tr>
                 <td><strong>A.</strong> Total On-Duty Hours Today:</td>
-                <td className="strong" style={{ textAlign: 'right' }}>{recap.on_duty_today.toFixed(2)} hrs</td>
+                <td className="strong" style={{ textAlign: 'right' }}>{(recap?.on_duty_today ?? 0).toFixed(2)} hrs</td>
               </tr>
               <tr>
                 <td><strong>B.</strong> Total 70-Hr Cycle Used to Date:</td>
-                <td className="strong" style={{ textAlign: 'right' }}>{recap.total_cycle_hours_used.toFixed(2)} hrs</td>
+                <td className="strong" style={{ textAlign: 'right' }}>{(recap?.total_cycle_hours_used ?? 0).toFixed(2)} hrs</td>
               </tr>
               <tr>
                 <td><strong>C.</strong> Available Hours for Tomorrow:</td>
-                <td className="strong" style={{ textAlign: 'right', color: recap.cycle_hours_available < 10 ? '#dc2626' : '#16a34a' }}>
-                  {recap.cycle_hours_available.toFixed(2)} hrs
+                <td className="strong" style={{ textAlign: 'right', color: (recap?.cycle_hours_available ?? 0) < 10 ? '#dc2626' : '#16a34a' }}>
+                  {(recap?.cycle_hours_available ?? 0).toFixed(2)} hrs
                 </td>
               </tr>
             </tbody>

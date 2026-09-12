@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 
 export default function RouteMap({ waypoints, route, stops, focusedLocation }) {
@@ -7,17 +7,21 @@ export default function RouteMap({ waypoints, route, stops, focusedLocation }) {
   const markersRef = useRef([]);
 
   useEffect(() => {
-    if (!mapRef.current) return;
+    const container = mapRef.current;
+    if (!container) return;
 
     // Destroy existing map if present
     if (mapInstanceRef.current) {
       mapInstanceRef.current.remove();
       mapInstanceRef.current = null;
     }
+    if (container && container._leaflet_id) {
+      delete container._leaflet_id;
+    }
 
     // Default center of US
     const defaultCenter = [39.8283, -98.5795];
-    const map = L.map(mapRef.current, {
+    const map = L.map(container, {
       center: defaultCenter,
       zoom: 4,
       scrollWheelZoom: true,
@@ -33,7 +37,7 @@ export default function RouteMap({ waypoints, route, stops, focusedLocation }) {
     }).addTo(map);
 
     // Helpers to create custom HTML markers
-    const createCustomIcon = (bgColor, symbol, label) => {
+    const createCustomIcon = (bgColor, symbol) => {
       return L.divIcon({
         className: 'custom-leaflet-marker',
         html: `
@@ -81,7 +85,7 @@ export default function RouteMap({ waypoints, route, stops, focusedLocation }) {
         }
 
         const marker = L.marker([w.lat, w.lng], {
-          icon: createCustomIcon(color, symbol, w.label)
+          icon: createCustomIcon(color, symbol)
         }).addTo(map);
 
         marker.bindPopup(`
@@ -145,7 +149,7 @@ export default function RouteMap({ waypoints, route, stops, focusedLocation }) {
         }
 
         const marker = L.marker([s.lat, s.lng], {
-          icon: createCustomIcon(color, symbol, s.name)
+          icon: createCustomIcon(color, symbol)
         }).addTo(map);
 
         marker.bindPopup(`
@@ -170,6 +174,9 @@ export default function RouteMap({ waypoints, route, stops, focusedLocation }) {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
+      }
+      if (container && container._leaflet_id) {
+        delete container._leaflet_id;
       }
     };
   }, [waypoints, route, stops]);

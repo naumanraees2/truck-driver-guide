@@ -686,19 +686,28 @@ body {
   background: #f8fafc;
 }
 
+/* Print & Screen Sheet Switching */
+.print-only-sheets {
+  display: none;
+}
+
 /* Print Styles */
 @media print {
   body {
     background: #ffffff !important;
     color: #000000 !important;
   }
-  .navbar, .main-grid, .stats-grid, .eld-tabs, .btn-print, .no-print {
+  .navbar, .main-grid, .stats-grid, .eld-tabs, .btn-print, .no-print, .screen-only-sheet {
     display: none !important;
+  }
+  .print-only-sheets {
+    display: block !important;
   }
   .eld-paper-sheet {
     box-shadow: none !important;
     border: none !important;
     page-break-after: always;
+    break-after: page;
     margin: 0 !important;
     padding: 0 !important;
   }

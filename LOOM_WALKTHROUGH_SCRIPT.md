@@ -69,3 +69,4 @@ Use this script and guide to record your **3 to 5 minute Loom presentation** for
 1. Keep the browser window maximized at 1080p (1920x1080) for clear text on the ELD grid.
 2. Demonstrate clicking one of the preset buttons (e.g. Richmond -> Newark or LA -> Dallas) to show real-time calculation.
 3. Show the "Print Sheets" button opening the print dialog, and demonstrate "Save SVG" downloading a vector file.
+

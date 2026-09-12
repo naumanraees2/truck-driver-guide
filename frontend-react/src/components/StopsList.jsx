@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ListOrdered, Fuel, Coffee, Moon, PackageCheck, Flag, RotateCcw, Navigation } from 'lucide-react';
 import RouteInstructions from './RouteInstructions';
 
-export default function StopsList({ stops, routeInstructions, onSelectStop }) {
+export default function StopsList({ stops, waypoints, routeInstructions, onSelectStop }) {
   const [activeTab, setActiveTab] = useState('stops'); // 'stops' or 'instructions'
 
   if (!stops || stops.length === 0) {
@@ -143,7 +143,14 @@ export default function StopsList({ stops, routeInstructions, onSelectStop }) {
               if (onSelectStop && inst.location) {
                 // Find matching stop or waypoint
                 const match = stops.find((s) => s.name === inst.title || s.location.includes(inst.location));
-                if (match) onSelectStop(match);
+                if (match) {
+                  onSelectStop(match);
+                  return;
+                }
+                const matchWp = (waypoints || []).find((w) => (w.display_name && w.display_name.includes(inst.location)) || (w.label && w.label.includes(inst.location)));
+                if (matchWp) {
+                  onSelectStop(matchWp);
+                }
               }
             }}
           />
